@@ -9,9 +9,11 @@
 #include <algorithm>
 #include <iostream>
 
-EncryptionMatrix::EncryptionMatrix( std::string& passphrase ) {
+using namespace std;
 
-	std::string charsForMatrixInsertion = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // these still need to be inserted into the matrix
+EncryptionMatrix::EncryptionMatrix( const string& passphrase ) {
+
+	string charsForMatrixInsertion = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // these still need to be inserted into the matrix
 
 	// Write the passphrase into the beginning of the matrix
 	this->encryptionString = passphrase;
@@ -19,7 +21,7 @@ EncryptionMatrix::EncryptionMatrix( std::string& passphrase ) {
 	// Delete the characters from the passphrase from the string of
 	// characters yet to be added (they have already been added, at the start).
 	for ( char& c : passphrase ) {
-		charsForMatrixInsertion.erase( std::remove( charsForMatrixInsertion.begin(), charsForMatrixInsertion.end(), c ), charsForMatrixInsertion.end() );
+		charsForMatrixInsertion.erase( remove( charsForMatrixInsertion.begin(), charsForMatrixInsertion.end(), c ), charsForMatrixInsertion.end() );
 	}
 
 	// Now add the rest of the characters NOT contained in the passphrase to the
@@ -27,9 +29,9 @@ EncryptionMatrix::EncryptionMatrix( std::string& passphrase ) {
 	this->encryptionString += charsForMatrixInsertion;
 }
 
-std::string
-EncryptionMatrix::convertText( std::string& inputText, CryptoDirection& direction ) const {
-	std::string outputText = ""; // This is the result
+string
+EncryptionMatrix::convertText( const string& inputText, const CryptoDirection& direction ) const {
+	string outputText = ""; // This is the result
 
 	// Loop over the input string. Build pairs of characters.
 	// Determine their position
@@ -62,7 +64,7 @@ EncryptionMatrix::convertText( std::string& inputText, CryptoDirection& directio
 }
 
 char
-EncryptionMatrix::getChar( MatrixPoint& point ) const {
+EncryptionMatrix::getChar( const MatrixPoint& point ) const {
 	return encryptionString[ point.y * MATRIXDIM + point.x ];
 }
 
@@ -72,16 +74,16 @@ EncryptionMatrix::~EncryptionMatrix() {
 }
 
 MatrixPoint
-EncryptionMatrix::findPosition(char c) const {
+EncryptionMatrix::findPosition( char c ) const {
 	int position = encryptionString.find( c );
 	MatrixPoint point( position, MATRIXDIM );
 	return point;
 }
 
-std::string
-EncryptionMatrix::createTargetCharPair( MatrixPoint point1,	MatrixPoint point2, CryptoDirection direction) const {
+string
+EncryptionMatrix::createTargetCharPair( const MatrixPoint& point1,	const MatrixPoint& point2, const CryptoDirection& direction) const {
 
-	std::string result = "";
+	string result = "";
 	MatrixPoint* newPoint = 0;
 	// Determine the relative position of the 2 characters
 	if ( ( point1.x != point2.x ) && ( point1.y != point2.y ) ) {

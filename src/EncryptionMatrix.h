@@ -17,10 +17,10 @@ enum CryptoDirection : int {
 class EncryptionMatrix {
 public:
 
-	EncryptionMatrix( std::string & passphrase );
+	EncryptionMatrix( const std::string & passphrase );
 
 	// This is the main method. Needs proper documentation.
-	std::string convertText( std::string& inputText, CryptoDirection& direction ) const;
+	std::string convertText( const std::string& inputText, const CryptoDirection& direction ) const;
 
 	virtual ~EncryptionMatrix();
 
@@ -35,11 +35,11 @@ private:
 	// one is one where there is one linear string, and the X and Y coordinates are
 	// calculated from the one-dimensional position when needed on the basis of the
 	// position and the matrix dimension.
-	std::string encryptionString = 0;
+	std::string encryptionString = "";
 
 
 	// Method that reads a char from a MatrixPoint. Useful for encryption.
-	char getChar ( MatrixPoint& point ) const;
+	char getChar ( const MatrixPoint& point ) const;
 
 
 	// Helper method determines the MatrixPoint of a char.
@@ -48,7 +48,7 @@ private:
 
 	// Helper method that returns a string of 2 chars for the clear chars provided.
 	// This result has to be added to the encrypted / decrypted string.
-	std::string createTargetCharPair ( MatrixPoint point1, MatrixPoint point2, CryptoDirection direction ) const ;
+	std::string createTargetCharPair ( const MatrixPoint& point1, const MatrixPoint& point2, const CryptoDirection& direction ) const ;
 
 };
 
