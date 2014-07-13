@@ -13,11 +13,11 @@
 #include "EncryptionMatrix.h"
 #include "my_cpp_encryption.h"
 using namespace std;
-using namespace string;
+
 
 string          passphrase = "";
 string          inputText  = "";
-CryptoDirection direction  = 0;
+CryptoDirection direction;
 
 
 int
@@ -59,7 +59,7 @@ getPassphrase ( const string& commandlineText ) {
 		bool isStringOk = false;
 		string s = "";
 
-		if ( commandlineText == 0 || commandlineText == "" ) {
+		if ( commandlineText == "" ) {
 			cout << "Please enter the passphrase:" << endl;
 			do {
 				getline(cin, s);
@@ -72,7 +72,7 @@ getPassphrase ( const string& commandlineText ) {
 
 		// Remove spaces and convert to upper case
 		s.erase( remove( s.begin(), s.end(), ' ' ), s.end() ); // Remove spaces
-		for ( int i = 0; i < s.length(); i++ ) {
+		for ( unsigned int i = 0; i < s.length(); i++ ) {
 			s[i] = toupper( s[i] );
 		}
 
@@ -88,7 +88,7 @@ getDirection( const string& commandlineText ) {
 	string s = "";
 	char c; // first character of the string
 
-	if ( commandlineText == 0 || commandlineText == "" ) {
+	if ( commandlineText == "" ) {
 
 		cout << "Please enter the direction: 'E' for encryption, 'D' for decryption:";
 
@@ -116,7 +116,7 @@ getInputtext ( const string& commandlineText ) {
 	bool isStringOk = false;
 	string s = "";
 
-	if ( commandlineText == 0 || commandlineText == "" ) {
+	if ( commandlineText == "" ) {
 
 		cout << "Please enter the input text:" << endl;
 
@@ -131,14 +131,14 @@ getInputtext ( const string& commandlineText ) {
 
 	// Replace ÃŸ before conversion (otherwise it will not work)
 	string newS = "";
-	for ( int i = 0; i < s.length(); i++ ) {
-		if ( s[i] == 'ÃŸ')
+	for ( unsigned int i = 0; i < s.length(); i++ ) {
+		if ( s[i] == 'ß')
 			newS += "SS";
-		else if ( toupper( s[i] ) == 'Ã„' )
+		else if ( toupper( s[i] ) == 'Ã' )
 			newS += "AE";
-		else if ( toupper( s[i] ) == 'Ã–' )
+		else if ( toupper( s[i] ) == 'Ö' )
 			newS += "OE";
-		else if ( toupper( s[i] ) == 'Ãœ' )
+		else if ( toupper( s[i] ) == 'Ü' )
 			newS += "UE";
 		else if ( s[i] != ' ' )// spaces are ignored, all other characters are simply capitalized
 			newS += toupper( s[i] );
@@ -152,8 +152,8 @@ getInputtext ( const string& commandlineText ) {
 bool
 checkPassphrase( const string& passphrase ) {
 
-	for ( int i = 0; i < passphrase.length()-1; i++ ) {
-		for ( int j = i+1; j < passphrase.length(); j++ ) {
+	for ( unsigned int i = 0; i < passphrase.length()-1; i++ ) {
+		for ( unsigned int j = i+1; j < passphrase.length(); j++ ) {
 			if ( passphrase[ i ] == passphrase[ j ] ) {
 				cout << "The passphrase must contain each character a maximum of one time." << endl;
 				return false;
@@ -181,14 +181,15 @@ convertString( const string& passphrase, const string& inputText, const CryptoDi
 // Output. Note that this could be changed to provide the output in a GUI.
 void
 printResultText( const string& outputText ) {
+	string temp = outputText;
 	cout << "Result Text:" << endl;
 
 	// Output in chunks of 5 characters separated by space; if not enough left, the rest will be printed.
-	while ( outputText.length() >= 5 ){
-		cout << outputText. substr( 0, 5 ) << " ";
-		outputText = outputText.substr( 5 );
+	while ( temp.length() >= 5 ){
+		cout << temp. substr( 0, 5 ) << " ";
+		temp = temp.substr( 5 );
 	}
-	cout << outputText << endl;
+	cout << temp << endl;
 }
 
 
@@ -196,11 +197,11 @@ printResultText( const string& outputText ) {
 // Check this and provide a hint to the user if violated.
 bool
 checkStringContent( const string& str ) {
-    if ( str == NULL ) {
+    if ( str == "" ) {
        	cout << "Please enter at least one character or number!" << endl;
         return false;
     }
-    for ( int i = 0; i < str.length(); i++ ) {
+    for ( unsigned int i = 0; i < str.length(); i++ ) {
     	// Acceptable chars are a-zA-Z0-9 und Space
     	string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ";
     	// Error if we find characters that are NOT allowed.

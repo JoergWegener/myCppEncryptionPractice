@@ -8,6 +8,7 @@
 #ifndef MY_CPP_ENCRYPTION_H_
 #define MY_CPP_ENCRYPTION_H_
 
+#include <string>
 #include "EncryptionMatrix.h"
 using namespace std;
 

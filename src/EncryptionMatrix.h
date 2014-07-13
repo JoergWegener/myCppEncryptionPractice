@@ -8,6 +8,7 @@
 #ifndef ENCRYPTIONMATRIX_H_
 #define ENCRYPTIONMATRIX_H_
 
+#include <string>
 #include "MatrixPoint.h"
 
 enum CryptoDirection : int {

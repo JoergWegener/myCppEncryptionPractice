@@ -11,7 +11,7 @@
 
 using namespace std;
 
-EncryptionMatrix::EncryptionMatrix( const string& passphrase ) {
+EncryptionMatrix::EncryptionMatrix( const std::string& passphrase ) {
 
 	string charsForMatrixInsertion = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // these still need to be inserted into the matrix
 
@@ -20,7 +20,7 @@ EncryptionMatrix::EncryptionMatrix( const string& passphrase ) {
 
 	// Delete the characters from the passphrase from the string of
 	// characters yet to be added (they have already been added, at the start).
-	for ( char& c : passphrase ) {
+	for ( char c : passphrase ) {
 		charsForMatrixInsertion.erase( remove( charsForMatrixInsertion.begin(), charsForMatrixInsertion.end(), c ), charsForMatrixInsertion.end() );
 	}
 
@@ -35,7 +35,7 @@ EncryptionMatrix::convertText( const string& inputText, const CryptoDirection& d
 
 	// Loop over the input string. Build pairs of characters.
 	// Determine their position
-	for ( int i = 0; i < inputText.length() / 2; i++ ) {
+	for ( unsigned int i = 0; i < inputText.length() / 2; i++ ) {
 		char c1, c2;      // Characters to be compared
 
 		c1 = inputText[ i * 2 ];
@@ -70,7 +70,7 @@ EncryptionMatrix::getChar( const MatrixPoint& point ) const {
 
 
 EncryptionMatrix::~EncryptionMatrix() {
-	delete encryptionString;
+
 }
 
 MatrixPoint
