@@ -13,6 +13,7 @@
 #include "EncryptionMatrix.h"
 #include "my_cpp_encryption.h"
 using namespace std;
+using namespace string;
 
 string          passphrase = "";
 string          inputText  = "";
@@ -21,9 +22,6 @@ CryptoDirection direction  = 0;
 
 int
 main( int argc, char** argv ) {
-/*	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
-	return 0;
-*/
 
 	// Command line argument processing (if applicable)
 	if ( argc != 0 ) {
@@ -48,6 +46,7 @@ main( int argc, char** argv ) {
 
 	// Conversion (encryption or decryption) and printout in one step
 	printResultText( convertString( passphrase, inputText, direction ) );
+	return 0;
 
 }
 
@@ -64,17 +63,7 @@ getPassphrase ( const string& commandlineText ) {
 			cout << "Please enter the passphrase:" << endl;
 			do {
 				getline(cin, s);
-
-			/*	try {
-					BufferedReader bufferread = new BufferedReader( new InputStreamReader( System.in ) );
-					s = bufferread.readLine().toString();
-				}
-				catch ( IOException e ) {
-					e.printStackTrace();
-				}*/
-
 				isStringOk = checkStringContent(s);
-
 			} while ( !isStringOk );
 
 		} else {
@@ -104,19 +93,8 @@ getDirection( const string& commandlineText ) {
 		cout << "Please enter the direction: 'E' for encryption, 'D' for decryption:";
 
 		do {
-
-		/*	try {
-				BufferedReader bufferread = new BufferedReader( new InputStreamReader( System.in ) );
-				s = bufferread.readLine().toString();
-			}
-			catch ( IOException e ) {
-				e.printStackTrace();
-			}*/
-
 			getline( cin, s );
-
 			c = s[0];
-
 		} while ( (c != 'D') && (c != 'd') && (c != 'E') && (c != 'e') );
 
 	} else {
@@ -143,19 +121,8 @@ getInputtext ( const string& commandlineText ) {
 		cout << "Please enter the input text:" << endl;
 
 		do {
-
-			/*try {
-				BufferedReader bufferread = new BufferedReader( new InputStreamReader( System.in ) );
-				s = bufferread.readLine().toString();
-			}
-			catch ( IOException e ) {
-				e.printStackTrace();
-			}*/
-
 			getline( cin, s );
-
 			isStringOk = checkStringContent( s );
-
 		} while ( !isStringOk );
 
 	} else {
@@ -234,9 +201,10 @@ checkStringContent( const string& str ) {
         return false;
     }
     for ( int i = 0; i < str.length(); i++ ) {
+    	// Acceptable chars are a-zA-Z0-9 und Space
     	string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ";
+    	// Error if we find characters that are NOT allowed.
     	if ( str.find_first_not_of( acceptableChars ) != string::npos) {
-//        if ( ( Character.isLetterOrDigit( str.charAt( i ) ) == false ) && ( str.charAt( i ) != ' ') ) {
            	cout << "Please only use characters and numbers. No symbols or Umlauts allowed." << endl;
             return false;
         }
