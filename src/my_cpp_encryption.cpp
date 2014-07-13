@@ -24,7 +24,7 @@ int
 main( int argc, char** argv ) {
 
 	// Command line argument processing (if applicable)
-	if ( argc != 0 ) {
+	if ( argc != 1 ) {
 		if ( !processArgs( argc, argv ) ) {
 			return -1; // Failure :(
 		}
@@ -89,14 +89,11 @@ getDirection( const string& commandlineText ) {
 	char c; // first character of the string
 
 	if ( commandlineText == "" ) {
-
 		cout << "Please enter the direction: 'E' for encryption, 'D' for decryption:";
-
 		do {
 			getline( cin, s );
 			c = s[0];
 		} while ( (c != 'D') && (c != 'd') && (c != 'E') && (c != 'e') );
-
 	} else {
 		s = commandlineText;
 	}
@@ -117,19 +114,16 @@ getInputtext ( const string& commandlineText ) {
 	string s = "";
 
 	if ( commandlineText == "" ) {
-
 		cout << "Please enter the input text:" << endl;
-
 		do {
 			getline( cin, s );
 			isStringOk = checkStringContent( s );
 		} while ( !isStringOk );
-
 	} else {
 		s = commandlineText;
 	}
 
-	// Replace ÃŸ before conversion (otherwise it will not work)
+	// Replace umlauts before conversion (otherwise it will not work)
 	string newS = "";
 	for ( unsigned int i = 0; i < s.length(); i++ ) {
 		if ( s[i] == 'ß')
@@ -152,15 +146,19 @@ getInputtext ( const string& commandlineText ) {
 bool
 checkPassphrase( const string& passphrase ) {
 
+	// Loop over the characters from left to right and check whether
+	// the current character appears later in the string again. If so,
+	// no good.
 	for ( unsigned int i = 0; i < passphrase.length()-1; i++ ) {
 		for ( unsigned int j = i+1; j < passphrase.length(); j++ ) {
-			if ( passphrase[ i ] == passphrase[ j ] ) {
+			if ( passphrase[i] == passphrase[j] ) {
 				cout << "The passphrase must contain each character a maximum of one time." << endl;
 				return false;
 			}
 		}
 	}
 
+	// No error encountered, so all is well
 	return true;
 }
 
@@ -173,7 +171,10 @@ convertString( const string& passphrase, const string& inputText, const CryptoDi
     else
        	cout << "Text to be decrypted:" << endl << inputText << endl;
 
+    // Set up the main class with the passphrase, so conversion can be prepared.
     EncryptionMatrix myMatrix( passphrase );
+
+    // Convert the text (encrypt or decrypt) and return the result
     return myMatrix.convertText( inputText, direction );
 }
 
@@ -181,7 +182,7 @@ convertString( const string& passphrase, const string& inputText, const CryptoDi
 // Output. Note that this could be changed to provide the output in a GUI.
 void
 printResultText( const string& outputText ) {
-	string temp = outputText;
+	string temp = outputText; // we DON'T change the input!
 	cout << "Result Text:" << endl;
 
 	// Output in chunks of 5 characters separated by space; if not enough left, the rest will be printed.
@@ -202,8 +203,10 @@ checkStringContent( const string& str ) {
         return false;
     }
     for ( unsigned int i = 0; i < str.length(); i++ ) {
-    	// Acceptable chars are a-zA-Z0-9 und Space
-    	string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ";
+
+    	// Acceptable chars are a-zA-Z0-9, German umlauts and Space
+    	string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß1234567890 ";
+
     	// Error if we find characters that are NOT allowed.
     	if ( str.find_first_not_of( acceptableChars ) != string::npos) {
            	cout << "Please only use characters and numbers. No symbols or Umlauts allowed." << endl;
@@ -219,28 +222,35 @@ checkStringContent( const string& str ) {
 // Return TRUE if successful, so we can decrypt and print the result.
 bool
 processArgs( int argc, char** argv ) {
-	if ( argc != 3 ) {
+	if ( argc != 4 ) {
 		// Wrong call
 		printCommandLineUserhelp();
 		return false;
 	}
 
-	if ( checkStringContent( argv[ 0 ] ) && checkPassphrase( argv[ 0 ] ) ) {
-		passphrase = getPassphrase( argv[0] );
+	// Get the passphrase: first parameter (argv[1], as argv[0] is the stupid filename, FFS!
+	if ( checkStringContent( argv[1] ) && checkPassphrase( argv[1] ) ) {
+		passphrase = getPassphrase( argv[1] );
 	} else {
 		printCommandLineUserhelp();
 		return false;
 	}
-	if ( ( argv[1][0] == 'D' ) ||
-		 ( argv[1][0] == 'd' ) ||
-		 ( argv[1][0] == 'E' ) ||
-		 ( argv[1][0] == 'e' ) ) {
-		direction  = getDirection( argv[1] );
+
+	// Get the direction from the first character of the second parameter
+	if ( ( argv[2][0] == 'D' ) ||
+		 ( argv[2][0] == 'd' ) ||
+		 ( argv[2][0] == 'E' ) ||
+		 ( argv[2][0] == 'e' ) ) {
+		direction  = getDirection( argv[2] );
 	} else {
 		printCommandLineUserhelp();
 		return false;
 	}
-	inputText  = getInputtext( argv[2] );
+
+	// The third and last parameter contains the input text that has to be
+	// converted (encrypted or decrypted).
+	inputText  = getInputtext( argv[3] );
+
 	return true;
 }
 
@@ -249,9 +259,9 @@ processArgs( int argc, char** argv ) {
 void
 printCommandLineUserhelp( ) {
 	cout << "Wrong call! Please call the program like that:" << endl;
-	cout << "java EncryptionMain <passphrase> <direction> <inputtext>" << endl;
+	cout << "programname <passphrase> <direction> <inputtext>" << endl;
 	cout << "where <direction> is D for decryption or E for encryption." << endl;
-	cout << "Also note that you have to use \" in case of text with spaces!" << endl;
+	cout << "Also note that you have to use \" in case of text with spaces!" << endl << endl;
 }
 
 
