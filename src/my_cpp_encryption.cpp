@@ -45,7 +45,7 @@ main( int argc, char** argv ) {
 	}
 
 	// Conversion (encryption or decryption) and printout in one step
-	printResultText( convertString( passphrase, inputText, direction ) );
+	printResultText( convertString( passphrase, inputText, direction ), direction );
 	return 0;
 
 }
@@ -181,16 +181,23 @@ convertString( const string& passphrase, const string& inputText, const CryptoDi
 
 // Output. Note that this could be changed to provide the output in a GUI.
 void
-printResultText( const string& outputText ) {
+printResultText( const string& outputText, const CryptoDirection& direction ) {
 	string temp = outputText; // we DON'T change the input!
 	cout << "Result Text:" << endl;
 
-	// Output in chunks of 5 characters separated by space; if not enough left, the rest will be printed.
-	while ( temp.length() >= 5 ){
-		cout << temp. substr( 0, 5 ) << " ";
-		temp = temp.substr( 5 );
+	// Cleartext output without spaces. Hard to read, but hey, spaces were deleted anyways!!!
+	if ( CryptoDirection::DECRYPT == direction ) {
+		cout << outputText << endl;
+	} else {
+
+		// Crypto-output in chunks of 5 characters separated by space; if not enough left, the rest will be printed.
+		while ( temp.length() >= 5 ){
+			cout << temp. substr( 0, 5 ) << " ";
+			temp = temp.substr( 5 );
+		}
+		cout << temp << endl;
+
 	}
-	cout << temp << endl;
 }
 
 

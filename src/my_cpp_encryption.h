@@ -36,7 +36,7 @@ string convertString( const string& passphrase, const string& inputText, const C
 
 
 // Output. Note that this could be changed to provide the output in a GUI.
-void printResultText( const string& outputText );
+void printResultText( const string& outputText, const CryptoDirection& direction );
 
 
 // Only characters, numbers and space allowed in passphrases and cleartexts.
