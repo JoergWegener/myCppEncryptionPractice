@@ -166,7 +166,7 @@ checkPassphrase( const string& passphrase ) {
 // Encryption functionality
 string
 convertString( const string& passphrase, const string& inputText, const CryptoDirection& direction ) {
-    if ( direction == ENCRYPT )
+    if ( CryptoDirection::ENCRYPT == direction )
       	cout << "Text to be encrypted:" << endl << inputText << endl;
     else
        	cout << "Text to be decrypted:" << endl << inputText << endl;
