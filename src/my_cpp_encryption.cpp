@@ -99,9 +99,9 @@ getDirection( const string& commandlineText ) {
 	}
 
 	if ( s[0] == 'D' || s[0] == 'd')
-		return DECRYPT;
+		return CryptoDirection::DECRYPT;
 	else
-		return ENCRYPT;
+		return CryptoDirection::ENCRYPT;
 }
 
 
