@@ -187,7 +187,7 @@ printResultText( const string& outputText, const CryptoDirection& direction ) {
 
 	// Cleartext output without spaces. Hard to read, but hey, spaces were deleted anyways!!!
 	if ( CryptoDirection::DECRYPT == direction ) {
-		cout << outputText << endl;
+		cout << temp << endl;
 	} else {
 
 		// Crypto-output in chunks of 5 characters separated by space; if not enough left, the rest will be printed.
