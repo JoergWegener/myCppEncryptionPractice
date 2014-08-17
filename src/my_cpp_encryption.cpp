@@ -182,22 +182,31 @@ convertString( const string& passphrase, const string& inputText, const CryptoDi
 // Output. Note that this could be changed to provide the output in a GUI.
 void
 printResultText( const string& outputText, const CryptoDirection& direction ) {
-	string temp = outputText; // we DON'T change the input!
 	cout << "Result Text:" << endl;
+	cout << getResultText( outputText, direction ) << endl;
+}
+
+// Get the result text
+string
+getResultText( const string& outputText, const CryptoDirection& direction) {
+	string temp = outputText ; // we DON'T change the input!
+	string result = "";
 
 	// Cleartext output without spaces. Hard to read, but hey, spaces were deleted anyways!!!
 	if ( CryptoDirection::DECRYPT == direction ) {
-		cout << temp << endl;
+		result = temp;
 	} else {
 
 		// Crypto-output in chunks of 5 characters separated by space; if not enough left, the rest will be printed.
 		while ( temp.length() >= 5 ){
-			cout << temp. substr( 0, 5 ) << " ";
+			result += temp.substr( 0, 5 );
+			result += " ";
 			temp = temp.substr( 5 );
 		}
-		cout << temp << endl;
+		result += temp;
 
 	}
+	return result;
 }
 
 
