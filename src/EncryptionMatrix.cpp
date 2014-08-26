@@ -39,7 +39,7 @@ EncryptionMatrix::convertText( const string& inputText, const CryptoDirection& d
 		char c1, c2;      // Characters to be compared
 
 		c1 = inputText[ i * 2 ];
-		c2 = inputText[ ( i * 2 ) +1 ];
+		c2 = inputText[ ( i * 2 ) + 1 ];
 		MatrixPoint point1 = this->findPosition( c1 );
 		MatrixPoint point2 = this->findPosition( c2 );
 
@@ -52,8 +52,7 @@ EncryptionMatrix::convertText( const string& inputText, const CryptoDirection& d
 	// If there is an uneven number of chars, the last one is moved
 	// down / up one square
 	if ( ( inputText.length() % 2 ) == 1 ) {
-		char c;
-		c = inputText[ inputText.length() - 1 ];
+		char c = inputText[ inputText.length() - 1 ];
 		MatrixPoint point = this->findPosition( c );
 		MatrixPoint newPoint( point.x, ( point.y + direction + MATRIXDIM ) % MATRIXDIM );
 		outputText += this->getChar( newPoint );

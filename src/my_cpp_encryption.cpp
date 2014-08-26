@@ -11,7 +11,7 @@
 #include <ctype.h>
 #include <cctype>
 #include "EncryptionMatrix.h"
-//#include "my_cpp_encryption.h"
+
 using namespace std;
 
 
@@ -237,7 +237,7 @@ printResultText( const string& outputText, const CryptoDirection& direction ) {
 
 // Get the result text
 string
-getResultText( const string& outputText, const CryptoDirection& direction) {
+getResultText( const string& outputText, const CryptoDirection& direction ) {
 	string temp = outputText ; // we DON'T change the input!
 	string result = "";
 
@@ -267,17 +267,15 @@ checkStringContent( const string& str ) {
        	cout << "Please enter at least one character or number!" << endl;
         return false;
     }
-    for ( unsigned int i = 0; i < str.length(); i++ ) {
+    // Acceptable chars are a-zA-Z0-9, German umlauts and Space
+    string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß1234567890 ";
 
-    	// Acceptable chars are a-zA-Z0-9, German umlauts and Space
-    	string acceptableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß1234567890 ";
-
-    	// Error if we find characters that are NOT allowed.
-    	if ( str.find_first_not_of( acceptableChars ) != string::npos) {
-           	cout << "Please only use characters and numbers. No symbols or Umlauts allowed." << endl;
-            return false;
-        }
+    // Error if we find characters that are NOT allowed.
+    if ( str.find_first_not_of( acceptableChars ) != string::npos) {
+        cout << "Please only use characters and numbers. No symbols or Umlauts allowed." << endl;
+        return false;
     }
+
     return true;
 }
 

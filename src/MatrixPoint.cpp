@@ -12,7 +12,5 @@ MatrixPoint::MatrixPoint( int count, short matrixDimension ) {
 	this->y = count / matrixDimension; // y is number of full rows (DIV)
 }
 
-MatrixPoint::~MatrixPoint() {
-
-}
+MatrixPoint::~MatrixPoint() {}
 
